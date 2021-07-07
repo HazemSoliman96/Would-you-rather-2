@@ -1,36 +1,40 @@
 import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
-import Avatar from '@material-ui/core/Avatar';
-import Image from 'material-ui-image';
+import { Image } from 'semantic-ui-react';
 
 function TopBar(props) {
   const { users, User } = props;
   const { name, avatarURL } = users[User];
 
   return (
-    <div className="nav-wrapper">
-      <NavLink to="/" exact className="brand-logo">
-        <Image
-          src="/would-you-rather.png"
-          style={{ width: '55px', margin: '5px' }}
-        />
-        Home
-      </NavLink>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <NavLink to="/add" exact>
-          Add
+    <div className="ui fixed menu">
+      <div className="ui container">
+        <div className="item" />
+        <NavLink to="/" exact className="item header">
+          <Image
+            src="/would-you-rather.png"
+            style={{ width: '55px', margin: '5px' }}
+          />
         </NavLink>
-        <NavLink to="/leaderboard" exact>
+        <NavLink to="/add" exact className="item" activeClassName="active">
+          New
+        </NavLink>
+        <NavLink
+          to="/Board"
+          exact
+          className="item"
+          activeClassName="active"
+        >
           Board
         </NavLink>
         <div className="ui right floated item">
-          <span style={{ margin: '15px' }}>Welcome, {name}</span>
-          <Avatar alt={name} src={avatarURL} />
+          <span style={{ margin: '10px' }}>Hello, {name}</span>
+          <img className="ui avatar image" src={avatarURL} alt="" />
         </div>
-        <NavLink to="/Login" exact>
-          <i class="material-icons">logout</i>
+        <NavLink to="/logout" exact className="item" activeClassName="active">
+          Logout
         </NavLink>
-      </ul>
+      </div>
     </div>
   );
 }

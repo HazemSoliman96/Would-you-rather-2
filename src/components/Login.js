@@ -1,10 +1,7 @@
 import { Component } from 'react';
 import { connect } from 'react-redux';
-import Select from '@material-ui/core/Select';
-import Image from 'material-ui-image';
 import { setUser } from '../actions/UserAction';
-import Alert from '@material-ui/lab/Alert';
-import Snackbar from '@material-ui/core/Snackbar';
+import { Dropdown, Image, Message } from 'semantic-ui-react';
 
 class Login extends Component {
   state = {
@@ -70,46 +67,43 @@ class Login extends Component {
 
     return (
       <div className="ui container">
-        <div className="ui middle aligned center aligned grid">
-          <div className="column" style={{ width: '420px', margin: '5em' }}>
+        <div className="ui aligned center">
+          <div className="column">
             <Image
               src="would-you-rather.png"
               style={{
                 position: 'absolute',
-                zIndex: '90',
-                top: '15px',
                 left: '35px',
                 width: '80px'
               }}
             />
-            <h2
-              className="ui black image header"
-              style={{ marginLeft: '55px', marginBottom: '30px' }}
-            >
+            <h2 className="black header">
               <div className="content">Log-in</div>
             </h2>
-            <form className="ui large form">
-              <div className="ui raised segment">
+            <form className="large form">
+              <div className="segment">
                 <div className="field">
-                  <Select
-                    placeholder="Select a User"
-                    fluid
-                    selection
-                    options={Options}
-                    onChange={this.UserSelection}
-                  />
-                </div>
-                <Snackbar open={message.hidden}>
-                  <Alert severity="error">
-                    {message.content}
-                  </Alert>
-                </Snackbar>
-                <div className="field">Select a user.</div>
-                <div
-                  className="ui fluid black submit button"
-                  onClick={this.UserLogin}
-                >
-                  Login
+                  <div className="dropdown">
+                    <div className="menu">
+                      <Dropdown
+                        placeholder="Select a User"
+                        fluid
+                        selection
+                        options={Options}
+                        onChange={this.UserSelection}
+                      />
+                    </div>
+                    <Message hidden={message.hidden} negative>
+                      {message.content}
+                    </Message>
+                    <div className="field">Select a user.</div>
+                    <div
+                      className="submit ui button"
+                      onClick={this.UserLogin}
+                    >
+                      Login
+                    </div>
+                  </div>
                 </div>
               </div>
             </form>

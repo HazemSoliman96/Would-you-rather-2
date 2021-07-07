@@ -1,10 +1,7 @@
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import Card from '@material-ui/core/Card';
-import Button from '@material-ui/core/Button';
-import Avatar from '@material-ui/core/Avatar';
-import Tab from '@material-ui/core/Tab';
-import Menu from '@material-ui/core/Menu';
+import { Button, Card, Menu, Tab } from 'semantic-ui-react';
+
 
 
 function QuestionList(props) {
@@ -16,25 +13,20 @@ function QuestionList(props) {
         const question = questions[id];
         const user = users[question.author];
         return (
-          <Card key={id}>
-            <Card.Content>
-              <Avatar floated="right" size="tiny" src={user.avatarURL} />
-              <Card.Header>{user.name} asks</Card.Header>
-              <div>
-                Would you rather {question.optionOne.text} or{' '}
-                {question.optionTwo.text}?
-              </div>
-            </Card.Content>
-            <Card.Content extra>
-              <div className="ui two buttons">
+          <Card
+            key={id}
+            image={user.avatarURL}
+            header={user.name}
+            description={'Would you rather ' + question.optionOne.text + ' or '
+                        + question.optionTwo.text + '?' }
+            extra={<div className="ui two buttons">
                 <Link to={`/questions/${id}`} style={{ width: '100%' }}>
                   <Button fluid basic color="black">
-                    View Poll
+                    Vote
                   </Button>
                 </Link>
-              </div>
-            </Card.Content>
-          </Card>
+              </div>}
+          />
         );
       });
 
@@ -75,7 +67,7 @@ function QuestionList(props) {
     {
       menuItem: (
         <Menu.Item key="answered-questions">
-          Answered Questions<>{answeredQuestions}</>
+          Answered Questions {answeredQuestions}
         </Menu.Item>
       ),
       render: () => <Tab.Pane>{answeredQuestionsContent}</Tab.Pane>

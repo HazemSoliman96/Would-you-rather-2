@@ -2,36 +2,13 @@ import { connect } from 'react-redux';
 import { handleAnswer } from '../actions/shared';
 import { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import Avatar from '@material-ui/core/Avatar';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormLabel from '@material-ui/core/FormLabel';
-import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
-import Alert from '@material-ui/lab/Alert';
-import Snackbar from '@material-ui/core/Snackbar';
-import Badge from '@material-ui/core/Badge';
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(3)
-  },
-  button: {
-    margin: theme.spacing(1, 1, 0, 0)
-  }
-}));
+import { Image, Message, Progress } from 'semantic-ui-react';
+import 'semantic-ui-css/semantic.min.css';
 
 function Vote(props) {
   const [vote, setVote] = useState(null);
   const [message, setMessage] = useState({ hidden: true, content: '' });
   const { push } = useHistory();
-  const classes = useStyles();
 
   const handleChange = (e) => {
     setVote(e.target.value);
@@ -80,48 +57,42 @@ function Vote(props) {
       Math.round((CountOptionTwo / totalVotes) * 10000) / 100;
 
     return (
-      <Box display="flex" alignItems="center">
-        <Avatar alt={user.name} src={user.avatarURL} /> {user.name} asks Would
-        You Rather
-        <Box display="flex" alignItems="center">
-          <Box width="100%" mr={1}>
-            {votesOptionOne && (
-              <Badge badgeContent={'YourVote'} color="secondary"></Badge>
-            )}
-            <Typography variant="subtitle1" color="textPrimary">
-              {question.optionOne.text}
-            </Typography>
-            <LinearProgress variant="determinate" value={PercentOptionOne} />
-            <Typography variant="body2" color="textSecondary">
-              {CountOptionOne} out of {totalVotes} votes
-            </Typography>
-          </Box>
-          <Box minWidth={35}>
-            <Typography variant="body2" color="textSecondary">{`${Math.round(
-              props.value
-            )}%`}</Typography>
-          </Box>
-        </Box>
-        <Box display="flex" alignItems="center">
-          <Box width="100%" mr={1}>
-            {votesOptionTwo && (
-              <Badge badgeContent={'YourVote'} color="secondary"></Badge>
-            )}
-            <Typography variant="subtitle1" color="textPrimary">
-              {question.optionTwo.text}
-            </Typography>
-            <LinearProgress variant="determinate" value={PercentOptionTwo} />
-            <Typography variant="body2" color="textSecondary">
-              {CountOptionTwo} out of {totalVotes} votes
-            </Typography>
-          </Box>
-          <Box minWidth={35}>
-            <Typography variant="body2" color="textSecondary">{`${Math.round(
-              props.value
-            )}%`}</Typography>
-          </Box>
-        </Box>
-      </Box>
+      <div className="ui cards">
+        <div className="card">
+          <div className="content">
+            <img
+              className="right floated mini ui image"
+              src={user.avatarURL}
+              alt=""
+            />
+            <div className="header">{user.name}</div>
+            <div className="description">asks would you rather</div>
+            <div className="extra content">
+              <div className="ui two segments">
+                
+                
+                  <Progress percent={PercentOptionOne} progress>
+                {CountOptionOne} out of {totalVotes} votes
+              </Progress>
+                  <div className="bar"></div>
+                  {votesOptionOne && (
+                    <div className="floating ui green label">Your Vote</div>
+                  )}
+                </div>
+
+                {console.log(votesOptionTwo)}
+                  <Progress percent={PercentOptionTwo} progress>
+                {CountOptionTwo} out of {totalVotes} votes
+              </Progress>
+                  <div className="bar"></div>
+                  {votesOptionTwo && (
+                    <div className="floating ui green label">Your Vote</div>
+                  )}
+                  
+                </div>
+              </div>
+            </div>
+          </div>
     );
   };
 
@@ -137,44 +108,41 @@ function Vote(props) {
     const user = users[question.author];
 
     return (
-      <form onSubmit={handleClick}>
-        <FormControl component="fieldset" className={classes.formControl}>
-          <FormLabel component="legend">
-            <Avatar alt={user.name} src={user.avatarURL} /> {user.name} asks
-            Would You Rather
-          </FormLabel>
-          <RadioGroup
-            aria-label="quiz"
-            name="quiz"
-            value="options"
-            onChange={handleChange}
-          >
-            <FormControlLabel
-              value="best"
-              control={<Radio />}
-              label="The best!"
-            />
-            <FormControlLabel
-              value="worst"
-              control={<Radio />}
-              label="The worst."
-            />
-          </RadioGroup>
-          <FormHelperText>'Choose wisely</FormHelperText>
-          <Snackbar open={message.hidden}>
-            <Alert severity="error">
-              {message.content}
-            </Alert>
-          </Snackbar>
-          <Button
-            type="submit"
-            variant="outlined"
-            color="primary"
-            className={classes.button}
-          >
-            Vote
-          </Button>
-        </FormControl>
+      <form className="ui form">
+        <Image floated="right" size="tiny" src={user.avatarURL} />
+        <div className="grouped fields">
+          <label htmlFor="fruit">{user.name} asks Would you rather</label>
+          <div className="field">
+            <div className="ui radio checkbox">
+              <input
+                name="radioVote"
+                value="optionOne"
+                checked={vote === 'optionOne'}
+                onChange={handleChange}
+                type="radio"
+              />
+              <label>{question.optionOne.text}</label>
+            </div>
+          </div>
+          <div className="field">
+            <div className="ui radio checkbox">
+              <input
+                name="radioVote"
+                value="optionTwo"
+                checked={vote === 'optionTwo'}
+                onChange={handleChange}
+                type="radio"
+              />
+              <label>{question.optionTwo.text}</label>
+            </div>
+          </div>
+        </div>
+        <Message hidden={message.hidden} negative>
+          {message.content}
+        </Message>
+        <button className="ui button" type="submit" onClick={handleClick}>
+          Submit
+        </button>
       </form>
     );
   };
@@ -210,7 +178,7 @@ function Vote(props) {
   } else {
     result = questionAnswer();
   }
-  return <Box>{result}</Box>;
+  return <div className="card-group">{result}</div>;
 }
 
 const mapStateToProps = (state) => {

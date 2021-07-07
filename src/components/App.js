@@ -2,15 +2,16 @@ import { useState, Fragment, useEffect } from 'react';
 import { BrowserRouter, Switch, Route, useHistory } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { InitialData } from '../actions/shared';
-
+import 'semantic-ui-css/semantic.min.css'
 import TopBar from './TopBar';
 import Footer from './Footer';
 
+import Login from './Login';
 import List from './List'
 import New from './New';
 import Vote from './Vote';
 import Board from './Board';
-import Login from './Login';
+import Logout from './Logout';
 import NotFound from './NotFound';
 
 function App(props) {
@@ -45,7 +46,7 @@ function App(props) {
   return (
     <BrowserRouter>
       <Fragment>
-        <TopBar />
+      <TopBar />
         <div className="ui main text container" style={{ margin: '5em' }}>
           <Switch>
             <Route
@@ -73,6 +74,7 @@ function App(props) {
             />
             <Route path="/questions/:question_id" component={Vote} />
             <Route path="/Board" component={Board} />
+            <Route path="/logout" component={Logout} />
             <Route path="/404" component={NotFound} />
             <Route path="/" component={NotFound} />
           </Switch>

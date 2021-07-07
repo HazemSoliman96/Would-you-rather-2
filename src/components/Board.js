@@ -1,31 +1,15 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import Divider from '@material-ui/core/Divider';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import AssistantIcon from '@material-ui/icons/Assistant';
+import { Card } from 'semantic-ui-react';
+import 'semantic-ui-css/semantic.min.css';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    maxWidth: '36ch',
-    backgroundColor: theme.palette.background.paper
-  },
-  inline: {
-    display: 'inline'
-  }
-}));
 
 function Board(props) {
   const { users } = props;
 
   const awardColors = ['red', 'blue', 'green'];
   let rank = 0;
+  let rankSuffix = ['1st', '2nd', '3rd'];
   const scoreSorted = {};
 
   Object.keys(users)
@@ -35,7 +19,6 @@ function Board(props) {
       scoreSorted[user.id] = user;
     });
 
-  const classes = useStyles();
 
   const userCards = Object.keys(scoreSorted).map((id) => {
     const user = scoreSorted[id];
@@ -44,9 +27,9 @@ function Board(props) {
 
     if (awardColor) {
       label = {
-        as: 'div',
+        as: 'a',
         corner: 'left',
-        icon: 'trophy',
+        icon: 'ribbon',
         color: awardColor
       };
     }
@@ -55,36 +38,20 @@ function Board(props) {
     const score = answer + question;
 
     return (
-      <List className={classes.root}>
-        <Divider variant="inset" component="li" />
-        <ListItem alignItems="flex-start">
-          <ListItemAvatar>
-            {label && <AssistantIcon color={label.color} />}
-            <Avatar alt={user.name} src={user.avatarURL} />
-          </ListItemAvatar>
-          <ListItemText
-            primary={rank}
-            secondary={
-              <React.Fragment>
-                <Typography
-                  component="span"
-                  variant="body2"
-                  className={classes.inline}
-                  color="textPrimary"
-                >
-                  score: {score}
-                </Typography>
-                Answered: {answer}
-                <br />
-                Created: {question}
-              </React.Fragment>
-            }
-          />
-        </ListItem>
-      </List>
+      <Card
+      key={user.name}
+    image={user.avatarURL}
+    label= {label}
+    header={user.name}
+    meta={"Rank "  + (rankSuffix.shift() || 'th' )}
+    description={ "Answered: " + answer
+                  + '\u000A'
+                  + "Created: " + question}
+    extra={"Score " + score}
+  />
     );
   });
-  return <div>{userCards}</div>;
+  return <div className="card-group">{userCards}</div>;
 }
 
 const mapStateToProps = (state) => {
